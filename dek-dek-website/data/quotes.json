@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "text": "Le succès n'est pas final, l'échec n'est pas fatal : c'est le courage de continuer qui compte.",
+    "author": "Winston Churchill",
+    "category": "Motivation"
+  },
+  {
+    "id": 2,
+    "text": "La seule façon de faire du bon travail est d'aimer ce que vous faites.",
+    "author": "Steve Jobs",
+    "category": "Travail"
+  },
+  {
+    "id": 3,
+    "text": "L'éducation est l'arme la plus puissante qu'on puisse utiliser pour changer le monde.",
+    "author": "Nelson Mandela",
+    "category": "Éducation"
+  },
+  {
+    "id": 4,
+    "text": "Il n'y a qu'une façon d'éviter la critique : ne rien faire, ne rien dire et n'être rien.",
+    "author": "Aristote",
+    "category": "Courage"
+  },
+  {
+    "id": 5,
+    "text": "Le futur appartient à ceux qui croient en la beauté de leurs rêves.",
+    "author": "Eleanor Roosevelt",
+    "category": "Rêves"
+  }
+]
+
