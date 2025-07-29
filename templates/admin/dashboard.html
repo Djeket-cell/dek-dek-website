@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord - Administration | Dek.Dek</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #334155;
+        }
+
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 30px 25px;
+            border-bottom: 1px solid #475569;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            margin-bottom: 5px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: #3b82f6;
+            color: white;
+        }
+
+        .nav-link i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-section {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            padding: 0 25px;
+        }
+
+        .logout-link {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            color: #f87171;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-link:hover {
+            background: rgba(248, 113, 113, 0.1);
+        }
+
+        .logout-link i {
+            margin-right: 12px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-icon.books { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .stat-icon.quotes { background: linear-gradient(135deg, #10b981, #047857); }
+        .stat-icon.users { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .stat-icon.media { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .quick-actions h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #334155;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .action-btn i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-shield-alt"></i> Admin Panel</h2>
+                <p>Dek.Dek Management</p>
+            </div>
+
+            <div class="sidebar-nav">
+                <div class="nav-item">
+                    <a href="{{ url_for('admin_dashboard') }}" class="nav-link active">
+                        <i class="fas fa-chart-pie"></i>
+                        Tableau de bord
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ url_for('admin_books') }}" class="nav-link">
+                        <i class="fas fa-book"></i>
+                        Gestion des livres
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ url_for('admin_quotes') }}" class="nav-link">
+                        <i class="fas fa-quote-right"></i>
+                        Gestion des citations
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ url_for('admin_media') }}" class="nav-link">
+                        <i class="fas fa-photo-video"></i>
+                        Gestion des médias
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ url_for('admin_users') }}" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        Gestion des utilisateurs
+                    </a>
+                </div>
+            </div>
+
+            <div class="logout-section">
+                <a href="{{ url_for('admin_logout') }}" class="logout-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Déconnexion
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1>Tableau de bord</h1>
+                <p>Vue d'ensemble de votre site Dek.Dek</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid" id="stats-container">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Chargement des statistiques...
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h3><i class="fas fa-bolt"></i> Actions rapides</h3>
+                <div class="actions-grid">
+                    <a href="{{ url_for('admin_books') }}" class="action-btn">
+                        <i class="fas fa-plus"></i>
+                        Ajouter un livre
+                    </a>
+                    <a href="{{ url_for('admin_quotes') }}" class="action-btn">
+                        <i class="fas fa-quote-left"></i>
+                        Ajouter une citation
+                    </a>
+                    <a href="{{ url_for('admin_media') }}" class="action-btn">
+                        <i class="fas fa-upload"></i>
+                        Uploader des médias
+                    </a>
+                    <a href="{{ url_for('admin_users') }}" class="action-btn">
+                        <i class="fas fa-user-plus"></i>
+                        Créer un utilisateur
+                    </a>
+                    <a href="/" target="_blank" class="action-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Voir le site
+                    </a>
+                    <a href="/health" target="_blank" class="action-btn">
+                        <i class="fas fa-heartbeat"></i>
+                        Statut de l'API
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Charger les statistiques
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/admin/stats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const stats = data.data;
+                    const statsContainer = document.getElementById('stats-container');
+                    
+                    statsContainer.innerHTML = `
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon books">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value">${stats.total_books}</div>
+                            <div class="stat-label">Livres publiés</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon quotes">
+                                    <i class="fas fa-quote-right"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value">${stats.total_quotes}</div>
+                            <div class="stat-label">Citations inspirantes</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon users">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value">${stats.total_users}</div>
+                            <div class="stat-label">Utilisateurs inscrits</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon media">
+                                    <i class="fas fa-photo-video"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value">${stats.total_media}</div>
+                            <div class="stat-label">Fichiers médias</div>
+                        </div>
+                    `;
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (error) {
+                console.error('Erreur lors du chargement des statistiques:', error);
+                document.getElementById('stats-container').innerHTML = `
+                    <div class="stat-card">
+                        <div style="text-align: center; color: #ef4444;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Erreur lors du chargement des statistiques</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Charger les stats au chargement de la page
+        document.addEventListener('DOMContentLoaded', loadStats);
+    </script>
+</body>
+</html>
+
