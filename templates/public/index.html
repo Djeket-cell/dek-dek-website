@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dek.Dek - Livres Numériques et Citations Inspirantes</title>
+    <meta name="description" content="Découvrez une collection de livres numériques de qualité et des citations inspirantes pour votre développement personnel et professionnel.">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #000;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #000;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #000;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+
+        /* Featured Media Section */
+        .featured-section {
+            padding: 80px 0;
+            background: #f8f8f8;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        .media-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .media-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .media-content {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .media-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .media-content video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .media-item:hover .media-content img {
+            transform: scale(1.05);
+        }
+
+        .media-info {
+            padding: 25px;
+        }
+
+        .media-info h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .media-info p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .media-type {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Navigation Links Section */
+        .navigation-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .nav-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        .nav-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            border-color: #000;
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+        }
+
+        .nav-card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .nav-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .nav-card p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .nav-card .btn {
+            background: #000;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-card .btn:hover {
+            background: #333;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 80px 0;
+            background: #f8f8f8;
+        }
+
+        .about-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: #666;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .contact-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .contact-item h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .contact-item p {
+            color: #666;
+        }
+
+        .contact-item a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .media-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="/images/logo.png" alt="Dek.Dek Logo">
+                <span class="logo-text">Dek.Dek</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/livres">Livres</a></li>
+                <li><a href="/citations">Citations</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Bienvenue chez Dek.Dek</h1>
+                <p>Découvrez une collection exclusive de livres numériques et de citations inspirantes pour transformer votre vie personnelle et professionnelle.</p>
+                <a href="/livres" class="btn">Découvrir nos livres</a>
+            </div>
+        </section>
+
+        <!-- Featured Media Section -->
+        <section class="featured-section">
+            <div class="container">
+                <h2 class="section-title">Contenu en vedette</h2>
+                <p style="text-align: center; font-size: 1.1rem; margin-bottom: 3rem; color: #666;">
+                    Découvrez nos dernières publications et contenus exclusifs.
+                </p>
+                <div id="featured-media-container" class="media-grid">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Chargement du contenu...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation Cards Section -->
+        <section class="navigation-section">
+            <div class="container">
+                <h2 class="section-title">Explorez nos sections</h2>
+                <div class="nav-cards">
+                    <div class="nav-card">
+                        <div class="nav-card-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h3>Nos Livres</h3>
+                        <p>Explorez notre collection de livres numériques conçus pour vous inspirer et vous guider vers le succès.</p>
+                        <a href="/livres" class="btn">Voir les livres</a>
+                    </div>
+                    <div class="nav-card">
+                        <div class="nav-card-icon">
+                            <i class="fas fa-quote-right"></i>
+                        </div>
+                        <h3>Citations Inspirantes</h3>
+                        <p>Trouvez l'inspiration quotidienne avec notre collection de citations motivantes et réflexions profondes.</p>
+                        <a href="/citations" class="btn">Voir les citations</a>
+                    </div>
+                    <div class="nav-card">
+                        <div class="nav-card-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Nous Contacter</h3>
+                        <p>Une question ? Besoin d'aide ? Notre équipe est là pour vous accompagner dans votre parcours.</p>
+                        <a href="/contact" class="btn">Nous contacter</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section">
+            <div class="container">
+                <h2 class="section-title">À propos de Dek.Dek</h2>
+                <div class="about-content">
+                    <p>
+                        Dek.Dek est votre partenaire de confiance pour le développement personnel et professionnel. 
+                        Nous proposons des livres numériques de qualité, soigneusement sélectionnés et rédigés pour 
+                        vous accompagner dans votre parcours de croissance et de réussite.
+                    </p>
+                    <p>
+                        Que vous cherchiez à améliorer vos compétences en communication, développer votre esprit 
+                        entrepreneurial, ou simplement trouver l'inspiration quotidienne, nos ressources sont 
+                        conçues pour répondre à vos besoins.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <div class="container">
+                <h2 class="section-title">Contactez-nous</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h3>WhatsApp</h3>
+                        <p><a href="https://wa.me/2250142116172" target="_blank">+225 01 42 11 61 72</a></p>
+                        <p>Pour vos questions et preuves de paiement</p>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Adresse</h3>
+                        <p>Treichville, Arras 3<br>Côte d'Ivoire</p>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email</h3>
+                        <p><a href="mailto:contact@dek-dek.com">contact@dek-dek.com</a></p>
+                        <p>Support et questions générales</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="/">Accueil</a>
+                <a href="/livres">Livres</a>
+                <a href="/citations">Citations</a>
+                <a href="/contact">Contact</a>
+            </div>
+            <p>&copy; 2025 Dek.Dek. Tous droits réservés.</p>
+            <p style="font-size: 0.9rem; color: #999; margin-top: 1rem;">
+                Développement personnel • Communication • Entrepreneuriat
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Charger les médias en vedette
+        async function loadFeaturedMedia() {
+            try {
+                const response = await fetch('/api/featured-media');
+                const data = await response.json();
+                
+                const container = document.getElementById('featured-media-container');
+                
+                if (data.success && data.data.length > 0) {
+                    container.innerHTML = data.data.map(media => `
+                        <div class="media-item">
+                            <div class="media-content">
+                                ${media.file_type === 'video' ? 
+                                    `<video controls>
+                                        <source src="${media.url}" type="video/mp4">
+                                        Votre navigateur ne supporte pas la lecture vidéo.
+                                    </video>` :
+                                    `<img src="${media.url}" alt="${media.title || media.original_filename}">`
+                                }
+                                <div class="media-type">
+                                    <i class="fas fa-${media.file_type === 'video' ? 'play' : 'image'}"></i>
+                                    ${media.file_type === 'video' ? 'Vidéo' : 'Image'}
+                                </div>
+                            </div>
+                            <div class="media-info">
+                                <h3>${media.title || media.original_filename}</h3>
+                                <p>${media.description || 'Contenu exclusif Dek.Dek'}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                            <i class="fas fa-photo-video" style="font-size: 3rem; color: #ccc; margin-bottom: 20px;"></i>
+                            <h3 style="color: #666; margin-bottom: 10px;">Aucun contenu en vedette</h3>
+                            <p style="color: #999;">Le contenu sera bientôt disponible.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Erreur lors du chargement des médias:', error);
+                document.getElementById('featured-media-container').innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #ef4444; margin-bottom: 20px;"></i>
+                        <h3 style="color: #ef4444; margin-bottom: 10px;">Erreur de chargement</h3>
+                        <p style="color: #999;">Impossible de charger le contenu.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Charger les médias au chargement de la page
+        document.addEventListener('DOMContentLoaded', loadFeaturedMedia);
+    </script>
+</body>
+</html>
+
