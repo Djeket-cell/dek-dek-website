@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livres - Dek.Dek</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #667eea;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            color: #333;
+        }
+        
+        .auth-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .auth-links a {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn {
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .login-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .page-header h1 {
+            font-size: 3rem;
+            color: #333;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .book-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .book-image {
+            height: 250px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .book-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .book-content {
+            padding: 2rem;
+        }
+        
+        .book-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .book-author {
+            color: #667eea;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        
+        .book-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .book-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+        }
+        
+        .book-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .star {
+            color: #ffc107;
+        }
+        
+        .star.empty {
+            color: #e9ecef;
+        }
+        
+        .book-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            flex: 1;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-outline {
+            border: 2px solid #667eea;
+            color: #667eea;
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .comments-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .comments-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .add-comment-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .comment-form {
+            display: none;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .comment-form textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 100px;
+            margin-bottom: 1rem;
+        }
+        
+        .comment-form-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .comment {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .comment-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .comment-content {
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .rating-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .rating-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .rating-stars {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .rating-star {
+            font-size: 1.5rem;
+            color: #e9ecef;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .rating-star:hover,
+        .rating-star.active {
+            color: #ffc107;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .book-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="/" class="logo">
+                <i class="fas fa-book-open"></i> Dek.Dek
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/livres" class="active">Livres</a></li>
+                <li><a href="/citations">Citations</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            
+            <div class="user-menu">
+                <div class="user-info" id="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username"></span>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+                
+                <div class="auth-links" id="auth-links">
+                    <a href="/login" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Connexion
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-book"></i> Notre Collection de Livres</h1>
+            <p>Découvrez nos livres de développement personnel et de motivation</p>
+        </div>
+        
+        <div class="alert" id="alert"></div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Chargement des livres...</p>
+        </div>
+        
+        <div class="books-grid" id="books-grid">
+            <!-- Les livres seront chargés ici -->
+        </div>
+    </main>
+    
+    <script>
+        let currentUser = null;
+        
+        // Vérifier l'authentification
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/auth/me');
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentUser = result.data;
+                    document.getElementById('user-info').style.display = 'flex';
+                    document.getElementById('auth-links').style.display = 'none';
+                    document.getElementById('username').textContent = currentUser.username;
+                } else {
+                    document.getElementById('user-info').style.display = 'none';
+                    document.getElementById('auth-links').style.display = 'flex';
+                }
+            } catch (error) {
+                console.error('Erreur auth:', error);
+            }
+        }
+        
+        // Déconnexion
+        async function logout() {
+            try {
+                await fetch('/api/auth/logout', { method: 'POST' });
+                currentUser = null;
+                location.reload();
+            } catch (error) {
+                console.error('Erreur déconnexion:', error);
+            }
+        }
+        
+        // Charger les livres
+        async function loadBooks() {
+            try {
+                const response = await fetch('/api/books');
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayBooks(result.data);
+                } else {
+                    showAlert('Erreur lors du chargement des livres', 'error');
+                }
+            } catch (error) {
+                showAlert('Erreur de connexion', 'error');
+                console.error('Erreur:', error);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+        
+        // Afficher les livres
+        function displayBooks(books) {
+            const grid = document.getElementById('books-grid');
+            grid.innerHTML = '';
+            
+            books.forEach(book => {
+                const bookCard = createBookCard(book);
+                grid.appendChild(bookCard);
+            });
+        }
+        
+        // Créer une carte de livre
+        function createBookCard(book) {
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            
+            const rating = renderStars(book.average_rating || 0);
+            
+            card.innerHTML = `
+                <div class="book-image">
+                    ${book.image ? `<img src="${book.image}" alt="${book.title}">` : '<i class="fas fa-book"></i>'}
+                </div>
+                <div class="book-content">
+                    <h3 class="book-title">${book.title}</h3>
+                    <p class="book-author">Par ${book.author}</p>
+                    <p class="book-description">${book.description}</p>
+                    
+                    <div class="book-meta">
+                        <span><i class="fas fa-file-alt"></i> ${book.pages} pages</span>
+                        <span><i class="fas fa-tag"></i> ${book.category}</span>
+                        <span><i class="fas fa-file-pdf"></i> ${book.format}</span>
+                    </div>
+                    
+                    <div class="book-stats">
+                        <div class="stat">
+                            <div class="rating">${rating}</div>
+                            <span>(${book.ratings_count || 0})</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-comments"></i>
+                            <span>${book.comments_count || 0} commentaires</span>
+                        </div>
+                    </div>
+                    
+                    <div class="book-price">${book.price}€</div>
+                    
+                    <div class="book-actions">
+                        <button class="btn btn-primary" onclick="purchaseBook(${book.id})">
+                            <i class="fas fa-shopping-cart"></i> Acheter
+                        </button>
+                        <button class="btn btn-outline" onclick="toggleBookDetails(${book.id})">
+                            <i class="fas fa-info-circle"></i> Détails
+                        </button>
+                    </div>
+                    
+                    <div class="comments-section" id="comments-${book.id}" style="display: none;">
+                        <div class="comments-header">
+                            <h4 class="comments-title">Commentaires</h4>
+                            ${currentUser ? `<button class="add-comment-btn" onclick="toggleCommentForm(${book.id})">
+                                <i class="fas fa-plus"></i> Ajouter un commentaire
+                            </button>` : ''}
+                        </div>
+                        
+                        ${currentUser ? `
+                        <div class="comment-form" id="comment-form-${book.id}">
+                            <textarea placeholder="Votre commentaire..." id="comment-text-${book.id}"></textarea>
+                            <div class="comment-form-actions">
+                                <button class="btn btn-primary" onclick="submitComment(${book.id})">
+                                    <i class="fas fa-paper-plane"></i> Publier
+                                </button>
+                                <button class="btn btn-outline" onclick="toggleCommentForm(${book.id})">
+                                    Annuler
+                                </button>
+                            </div>
+                        </div>
+                        ` : ''}
+                        
+                        ${currentUser ? `
+                        <div class="rating-section">
+                            <div class="rating-title">Votre note :</div>
+                            <div class="rating-stars" id="rating-${book.id}">
+                                ${[1,2,3,4,5].map(star => `
+                                    <i class="fas fa-star rating-star" data-rating="${star}" onclick="rateBook(${book.id}, ${star})"></i>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                        
+                        <div class="comments-list" id="comments-list-${book.id}">
+                            <!-- Les commentaires seront chargés ici -->
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        // Rendre les étoiles
+        function renderStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<i class="fas fa-star star"></i>';
+                } else {
+                    stars += '<i class="fas fa-star star empty"></i>';
+                }
+            }
+            return stars;
+        }
+        
+        // Basculer les détails du livre
+        async function toggleBookDetails(bookId) {
+            const section = document.getElementById(`comments-${bookId}`);
+            
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                await loadComments(bookId);
+            } else {
+                section.style.display = 'none';
+            }
+        }
+        
+        // Charger les commentaires
+        async function loadComments(bookId) {
+            try {
+                const response = await fetch(`/api/comments/book/${bookId}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayComments(bookId, result.data);
+                }
+            } catch (error) {
+                console.error('Erreur chargement commentaires:', error);
+            }
+        }
+        
+        // Afficher les commentaires
+        function displayComments(bookId, comments) {
+            const list = document.getElementById(`comments-list-${bookId}`);
+            
+            if (comments.length === 0) {
+                list.innerHTML = '<p style="color: #666; text-align: center; padding: 1rem;">Aucun commentaire pour le moment.</p>';
+                return;
+            }
+            
+            list.innerHTML = comments.map(comment => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">${comment.username}</span>
+                        <span class="comment-date">${new Date(comment.created_at).toLocaleDateString('fr-FR')}</span>
+                    </div>
+                    <div class="comment-content">${comment.content}</div>
+                </div>
+            `).join('');
+        }
+        
+        // Basculer le formulaire de commentaire
+        function toggleCommentForm(bookId) {
+            const form = document.getElementById(`comment-form-${bookId}`);
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Soumettre un commentaire
+        async function submitComment(bookId) {
+            if (!currentUser) {
+                showAlert('Vous devez être connecté pour commenter', 'error');
+                return;
+            }
+            
+            const textarea = document.getElementById(`comment-text-${bookId}`);
+            const content = textarea.value.trim();
+            
+            if (!content) {
+                showAlert('Veuillez saisir un commentaire', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/comments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        content: content,
+                        content_type: 'book',
+                        content_id: bookId
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('Commentaire ajouté (en attente de modération)', 'success');
+                    textarea.value = '';
+                    toggleCommentForm(bookId);
+                } else {
+                    showAlert(result.error || 'Erreur lors de l\'ajout du commentaire', 'error');
+                }
+            } catch (error) {
+                showAlert('Erreur de connexion', 'error');
+                console.error('Erreur:', error);
+            }
+        }
+        
+        // Noter un livre
+        async function rateBook(bookId, rating) {
+            if (!currentUser) {
+                showAlert('Vous devez être connecté pour noter', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/ratings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        rating: rating,
+                        content_type: 'book',
+                        content_id: bookId
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('Note enregistrée', 'success');
+                    updateRatingStars(bookId, rating);
+                } else {
+                    showAlert(result.error || 'Erreur lors de la notation', 'error');
+                }
+            } catch (error) {
+                showAlert('Erreur de connexion', 'error');
+                console.error('Erreur:', error);
+            }
+        }
+        
+        // Mettre à jour les étoiles de notation
+        function updateRatingStars(bookId, rating) {
+            const stars = document.querySelectorAll(`#rating-${bookId} .rating-star`);
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        // Acheter un livre
+        function purchaseBook(bookId) {
+            showAlert('Fonctionnalité d\'achat en cours de développement', 'error');
+        }
+        
+        // Afficher une alerte
+        function showAlert(message, type = 'error') {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', async () => {
+            await checkAuth();
+            await loadBooks();
+        });
+    </script>
+</body>
+</html>
+
