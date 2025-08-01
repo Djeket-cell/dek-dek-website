@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "text": "Le succès n'est pas final, l'échec n'est pas fatal : c'est le courage de continuer qui compte.",
+    "author": "Winston Churchill",
+    "category": "Motivation",
+    "created_at": "2025-07-30T20:33:51.096131"
+  },
+  {
+    "id": 2,
+    "text": "La seule façon de faire du bon travail est d'aimer ce que vous faites.",
+    "author": "Steve Jobs",
+    "category": "Travail",
+    "created_at": "2025-07-30T20:33:51.096135"
+  },
+  {
+    "id": 3,
+    "text": "L'innovation distingue un leader d'un suiveur.",
+    "author": "Steve Jobs",
+    "category": "Leadership",
+    "created_at": "2025-07-30T20:33:51.096136"
+  }
+]
